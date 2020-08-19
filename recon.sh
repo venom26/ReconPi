@@ -131,7 +131,7 @@ gatherSubdomains() {
 	# fi
 
 	#echo -e "[$GREEN+$RESET] Resolving All Subdomains.."
-	cat "$SUBS"/all_subdomains.txt | sort -u | "$HOME"/go/bin/shuffledns -silent -d "$domain" -r "$IPS"/resolvers.txt > "$SUBS"/alive_subdomains
+	cat "$SUBS"/all_subdomains.txt | sort -u | >> "$SUBS"/alive_subdomains
 	#rm "$SUBS"/subdomains.txt
 	# Get http and https hosts
 	echo -e "[$GREEN+$RESET] Getting alive hosts.."
