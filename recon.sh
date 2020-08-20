@@ -172,13 +172,13 @@ checkTakeovers() {
 : 'Get all CNAME'
 getCNAME() {
 	startFunction "dnsprobe to get CNAMEs"
-	cat "$SUBS"/subdomains | dnsprobe -r CNAME -o "$SUBS"/subdomains_cname.txt
+	cat "$SUBS"/alive_subdomains  | dnsprobe -r CNAME -o "$SUBS"/subdomains_cname.txt
 }
 
 : 'Gather IPs with dnsprobe'
 gatherIPs() {
 	startFunction "dnsprobe"
-	cat "$SUBS"/subdomains | dnsprobe -silent -f ip | tee "$IPS"/"$domain"-ips.txt
+	cat "$SUBS"/alive_subdomains  | dnsprobe -silent -f ip | tee "$IPS"/"$domain"-ips.txt
 	cat "$IPS"/"$domain"-ips.txt | cf-check -c 5 | sort -u > "$IPS"/"$domain"-origin-ips.txt
 	echo -e "[$GREEN+$RESET] Done."
 }
@@ -240,25 +240,25 @@ startBruteForce() {
 : 'Check for Vulnerabilities'
 runNuclei() {
 	startFunction "Starting Nuclei Basic-detections"
-	nuclei -l "$SUBS"/hosts -t basic-detections/ -c 50 -o "$NUCLEISCAN"/basic-detections.txt
+	nuclei -l "$SUBS"/hosts -t basic-detections/ -c 200 -o "$NUCLEISCAN"/basic-detections.txt
 	startFunction "Starting Nuclei Brute-force"
-	nuclei -l "$SUBS"/hosts -t brute-force/ -c 50 -o "$NUCLEISCAN"/brute-force.txt
+	nuclei -l "$SUBS"/hosts -t brute-force/ -c 200 -o "$NUCLEISCAN"/brute-force.txt
 	startFunction "Starting Nuclei CVEs Detection"
-	nuclei -l "$SUBS"/hosts -t cves/ -c 50 -o "$NUCLEISCAN"/cve.txt
+	nuclei -l "$SUBS"/hosts -t cves/ -c 200 -o "$NUCLEISCAN"/cve.txt
 	startFunction "Starting Nuclei dns check"
-	nuclei -l "$SUBS"/hosts -t dns/ -c 50 -o "$NUCLEISCAN"/dns.txt
+	nuclei -l "$SUBS"/hosts -t dns/ -c 200 -o "$NUCLEISCAN"/dns.txt
 	startFunction "Starting Nuclei files check"
-	nuclei -l "$SUBS"/hosts -t files/ -c 50 -o "$NUCLEISCAN"/files.txt
+	nuclei -l "$SUBS"/hosts -t files/ -c 200 -o "$NUCLEISCAN"/files.txt
 	startFunction "Starting Nuclei Panels Check"
-	nuclei -l "$SUBS"/hosts -t panels/ -c 50 -o "$NUCLEISCAN"/panels.txt
+	nuclei -l "$SUBS"/hosts -t panels/ -c 200 -o "$NUCLEISCAN"/panels.txt
 	startFunction "Starting Nuclei Security-misconfiguration Check"
-	nuclei -l "$SUBS"/hosts -t security-misconfiguration/ -c 50 -o "$NUCLEISCAN"/security-misconfiguration.txt
+	nuclei -l "$SUBS"/hosts -t security-misconfiguration/ -c 200 -o "$NUCLEISCAN"/security-misconfiguration.txt
 	startFunction "Starting Nuclei Technologies Check"
-	nuclei -l "$SUBS"/hosts -t technologies/ -c 50 -o "$NUCLEISCAN"/technologies.txt
+	nuclei -l "$SUBS"/hosts -t technologies/ -c 200 -o "$NUCLEISCAN"/technologies.txt
 	startFunction "Starting Nuclei Tokens Check"
-	nuclei -l "$SUBS"/hosts -t tokens/ -c 50 -o "$NUCLEISCAN"/tokens.txt
+	nuclei -l "$SUBS"/hosts -t tokens/ -c 200 -o "$NUCLEISCAN"/tokens.txt
 	startFunction "Starting Nuclei Vulnerabilties Check"
-	nuclei -l "$SUBS"/hosts -t vulnerabilities/ -c 50 -o "$NUCLEISCAN"/vulnerabilties.txt
+	nuclei -l "$SUBS"/hosts -t vulnerabilities/ -c 200 -o "$NUCLEISCAN"/vulnerabilties.txt
 	echo -e "[$GREEN+$RESET] Nuclei Scan finished"
 }
 
