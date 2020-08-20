@@ -338,6 +338,7 @@ additionalTools() {
 	else
 		cd "$HOME"/tools/ || return
 		git clone https://github.com/GerbenJavado/LinkFinder.git
+		git clone https://github.com/projectdiscovery/nuclei-templates.git
 		cd "$HOME"/tools/LinkFinder || return
 		pip3 install -r requirements.txt --user
 		sudo python3 setup.py install
