@@ -127,7 +127,7 @@ gatherSubdomains() {
 	# else
 	# echo -e "[$GREEN+$RESET] Running altdns to mutate subdomains and resolving them.."
 	 #altdns -i "$SUBS"/all_subdomains.txt -w "$HOME"/ReconPi/wordlists/words_permutation.txt -o "$SUBS"/altdns.txt
-	 cat "$SUBS"/altdns.txt | shuffledns -silent -d "$domain" -r "$IPS"/resolvers.txt >> "$SUBS"/all_subdomains.txt
+	 #cat "$SUBS"/altdns.txt | shuffledns -silent -d "$domain" -r "$IPS"/resolvers.txt >> "$SUBS"/all_subdomains.txt
 	# fi
 
 	#echo -e "[$GREEN+$RESET] Resolving All Subdomains.."
