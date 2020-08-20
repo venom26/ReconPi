@@ -305,11 +305,11 @@ getCNAME
 gatherIPs
 gatherScreenshots
 startMeg
-#fetchArchive
-#fetchEndpoints
+fetchArchive
+fetchEndpoints
 runNuclei
 portScan
-#makePage
-notifySlack
+makePage
+#notifySlack
 
 # Uncomment the functions
