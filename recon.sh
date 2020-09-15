@@ -49,7 +49,7 @@ checkDirectories() {
 		echo -e "[$GREEN+$RESET] Creating directories and grabbing wordlists for $GREEN$domain$RESET.."
 		mkdir -p "$RESULTDIR"
 		mkdir -p "$SUBS" "$SCREENSHOTS" "$DIRSCAN" "$HTML" "$WORDLIST" "$IPS" "$PORTSCAN" "$ARCHIVE" "$NUCLEISCAN"
-		#sudo mkdir -p /var/www/html/"$domain"
+		sudo mkdir -p /var/www/html/"$domain"
 	fi
 }
 
@@ -108,7 +108,7 @@ gatherSubdomains() {
 	echo -e "[$GREEN+$RESET] Done, next."
 
 	startFunction "Starting rapiddns"
-	curl -s "https://rapiddns.io/subdomain/$domain?full=1" | grep -oP '_blank">\K[^<]*' | grep -v http | sort -u | tee "$SUBS"/rapiddns_subdomains.txt
+	crobat -s "$domain" | sort -u | tee "$SUBS"/rapiddns_subdomains.txt
 	echo -e "[$GREEN+$RESET] Done, next."
 
 	echo -e "[$GREEN+$RESET] Combining and sorting results.."
@@ -121,13 +121,13 @@ gatherSubdomains() {
 
 	#If total alive subdomains are less than 500, run dnsgen otherwise altdns, this is done to keep script efficient.
 	# if [ "$all_subdomains" -lt 500 ]; then
-	 echo -e "[$GREEN+$RESET] Running dnsgen to mutate subdomains and resolving them.."
+	echo -e "[$GREEN+$RESET] Running dnsgen to mutate subdomains and resolving them.."
 	cat "$SUBS"/all_subdomains.txt | dnsgen - | sort -u | shuffledns -silent -d "$domain" -r "$IPS"/resolvers.txt -o "$SUBS"/dnsgen.txt
 	cat "$SUBS"/dnsgen.txt | sort -u >> "$SUBS"/all_subdomains.txt
 	# else
-	# echo -e "[$GREEN+$RESET] Running altdns to mutate subdomains and resolving them.."
-	 #altdns -i "$SUBS"/all_subdomains.txt -w "$HOME"/ReconPi/wordlists/words_permutation.txt -o "$SUBS"/altdns.txt
-	 #cat "$SUBS"/altdns.txt | shuffledns -silent -d "$domain" -r "$IPS"/resolvers.txt >> "$SUBS"/all_subdomains.txt
+	echo -e "[$GREEN+$RESET] Running altdns to mutate subdomains and resolving them.."
+	altdns -i "$SUBS"/all_subdomains.txt -w "$HOME"/ReconPi/wordlists/words_permutation.txt -o "$SUBS"/altdns.txt
+	cat "$SUBS"/altdns.txt | shuffledns -silent -d "$domain" -r "$IPS"/resolvers.txt >> "$SUBS"/all_subdomains.txt
 	# fi
 
 	#echo -e "[$GREEN+$RESET] Resolving All Subdomains.."
